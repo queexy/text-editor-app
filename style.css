@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  #toolbar {
+    background: #f0f0f0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  #editor {
+    flex: 1;
+    padding: 20px;
+    font-size: 16px; /* Domyślna wielkość czcionki */
+    outline: none;
+    overflow-y: auto;
+    border: none;
+  }
