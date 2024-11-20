@@ -1,10 +1,8 @@
 const editor = document.getElementById('editor');
 const fontSizeSelect = document.getElementById('fontSize');
 
-// Ustawienie domyślnego rozmiaru czcionki
 let currentFontSize = '16px';
 
-// Funkcja ustawiająca styl dla bieżącego zaznaczenia
 function applyFontSize(size) {
   const selection = window.getSelection();
   if (!selection.isCollapsed) {
@@ -15,14 +13,13 @@ function applyFontSize(size) {
   }
 }
 
-// Obsługa zmiany rozmiaru czcionki
+
 fontSizeSelect.addEventListener('change', (event) => {
   currentFontSize = event.target.value + 'px';
   applyFontSize(currentFontSize);
-  editor.focus(); // Utrzymanie fokusu na edytorze
+  editor.focus(); 
 });
 
-// Nasłuch na wprowadzanie nowego tekstu
 editor.addEventListener('input', () => {
   const children = editor.childNodes;
   children.forEach((child) => {
@@ -35,9 +32,8 @@ editor.addEventListener('input', () => {
   });
 });
 
-// Obsługa zapisu
 document.getElementById('saveBtn').addEventListener('click', async () => {
-  const content = editor.innerHTML; // Pobranie treści edytora jako HTML
+  const content = editor.innerHTML; 
   const success = await window.electronAPI.saveFile(content);
 
   if (success) {
