@@ -1,11 +1,12 @@
 const { Document, Packer, Paragraph, TextRun } = require('docx');
 
-
+/**
+ * @param {string} htmlContent
+ * @param {function} callback 
+ */
 function saveAsDocx(htmlContent, callback) {
-
   const lines = htmlContent.split(/<div>|<\/div>|<br>/).filter((line) => line.trim() !== '');
 
-  
   const paragraphs = lines.map((line) =>
     new Paragraph({
       children: [new TextRun(line)],

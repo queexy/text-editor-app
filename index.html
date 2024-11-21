@@ -7,18 +7,22 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="toolbar">
-    <select id="fontSize">
-      <option value="12">12px</option>
-      <option value="14">14px</option>
-      <option value="16" selected>16px</option>
-      <option value="18">18px</option>
-      <option value="24">24px</option>
-      <option value="32">32px</option>
-    </select>
-    <button id="saveBtn">Zapisz jako DOCX</button>
+  <div class="toolbar-content">
+    <div id="toolbar">
+      <select id="fontSize">
+        <option value="12">12px</option>
+        <option value="14">14px</option>
+        <option value="16" selected>16px</option>
+        <option value="18">18px</option>
+        <option value="24">24px</option>
+        <option value="32">32px</option>
+      </select>
+      <button id="saveBtn">Zapisz jako DOCX</button>
+    </div>
   </div>
-  <div id="editor" contenteditable="true"></div>
+  <div id="paperContainer">
+    <!-- Kartki są dynamicznie dodawane tutaj -->
+  </div>
   <script src="renderer.js"></script>
 </body>
 </html>

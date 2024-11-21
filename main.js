@@ -1,13 +1,12 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const fs = require('fs');
 const path = require('path');
 
 let mainWindow;
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 800, // Domyślna szerokość okna
+    height: 600, // Domyślna wysokość okna
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -15,21 +14,11 @@ app.on('ready', () => {
     },
   });
 
+  // Maksymalizacja okna
+  mainWindow.maximize();
+
+  // Załaduj plik HTML
   mainWindow.loadFile('index.html');
-});
-
-ipcMain.handle('save-file', async (event, content) => {
-  const { filePath } = await dialog.showSaveDialog({
-    title: 'Zapisz dokument jako',
-    defaultPath: 'document.docx',
-    filters: [{ name: 'Dokumenty Word', extensions: ['docx'] }],
-  });
-
-  if (filePath) {
-    fs.writeFileSync(filePath, content);
-    return true;
-  }
-  return false;
 });
 
 app.on('window-all-closed', () => {

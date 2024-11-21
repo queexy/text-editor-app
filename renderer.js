@@ -1,8 +1,10 @@
-const editor = document.getElementById('editor');
+const paperContainer = document.getElementById('paperContainer');
 const fontSizeSelect = document.getElementById('fontSize');
+const saveBtn = document.getElementById('saveBtn');
 
 let currentFontSize = '16px';
 
+// Funkcja zmiany rozmiaru czcionki na zaznaczonym tekście
 function applyFontSize(size) {
   const selection = window.getSelection();
   if (!selection.isCollapsed) {
@@ -13,27 +15,46 @@ function applyFontSize(size) {
   }
 }
 
-
+// Obsługa zmiany rozmiaru czcionki
 fontSizeSelect.addEventListener('change', (event) => {
   currentFontSize = event.target.value + 'px';
-  applyFontSize(currentFontSize);
-  editor.focus(); 
 });
 
-editor.addEventListener('input', () => {
-  const children = editor.childNodes;
-  children.forEach((child) => {
-    if (child.nodeType === Node.TEXT_NODE) {
-      const span = document.createElement('span');
-      span.style.fontSize = currentFontSize;
-      span.textContent = child.textContent;
-      editor.replaceChild(span, child);
-    }
+// Funkcja dodająca nową kartkę
+function addNewPaper() {
+  const newPaper = document.createElement('div');
+  newPaper.classList.add('paper');
+  newPaper.contentEditable = 'true';
+  paperContainer.appendChild(newPaper);
+  newPaper.focus();
+}
+
+// Funkcja sprawdzająca, czy ostatnia kartka jest pełna
+function checkIfLastPaperFull() {
+  const papers = document.querySelectorAll('.paper');
+  const lastPaper = papers[papers.length - 1];
+
+  // Jeśli zawartość ostatniej kartki wychodzi poza widoczny obszar, dodaj nową
+  if (lastPaper.scrollHeight > lastPaper.offsetHeight) {
+    addNewPaper();
+    paperContainer.scrollTop = paperContainer.scrollHeight; // Przewiń na dół
+  }
+}
+
+// Nasłuchiwanie na zmiany w edytorze
+paperContainer.addEventListener('input', () => {
+  checkIfLastPaperFull();
+});
+
+// Zapis treści do pliku DOCX
+saveBtn.addEventListener('click', async () => {
+  const papers = document.querySelectorAll('.paper');
+  let content = '';
+
+  papers.forEach((paper) => {
+    content += `<div style="page-break-after: always;">${paper.innerHTML}</div>`;
   });
-});
 
-document.getElementById('saveBtn').addEventListener('click', async () => {
-  const content = editor.innerHTML; 
   const success = await window.electronAPI.saveFile(content);
 
   if (success) {
@@ -42,3 +63,6 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
     alert('Zapis anulowany.');
   }
 });
+
+// Dodajemy pierwszą kartkę przy starcie
+addNewPaper();
